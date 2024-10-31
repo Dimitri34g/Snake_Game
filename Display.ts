@@ -51,19 +51,18 @@ export class Display {
             if (delta >= this.speed) {
                 if (this.ctx != null) {
                     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                    game.update(chrono);
-                    game.render(this);
+                    done = game.play(this);
                     this.score = game.getScore();
                     this.refreshScore();
                     lastChrono = chrono;
-    
-                    if (game.isGameOver) {
-                        done = true;
-                        alert(`Game Over! Your score: ${this.score}`);
-                    }
                 }
             }
-            if (!done) requestAnimationFrame(loop);
+    
+            if (!done) {
+                requestAnimationFrame(loop);
+            } else {
+                setTimeout(() => alert("Game Over! Your score: " + this.score), 0);
+            }
         };
     
         requestAnimationFrame(loop);

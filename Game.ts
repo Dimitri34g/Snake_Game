@@ -10,8 +10,7 @@ export class Game {
   private snake: Snake;
   private apple: Apple;
   private score: number;
-  public isGameOver: boolean;
-  private lastUpdateTime: number;
+  private isGameOver: boolean;
 
   constructor(width: number, height: number, speed: number) {
     this.width = width;
@@ -21,28 +20,18 @@ export class Game {
     this.apple = new Apple(this.getRandomPosition().x, this.getRandomPosition().y);
     this.score = 0;
     this.isGameOver = false;
-    this.lastUpdateTime = 0;
   }
 
-  public start(): void {
-    this.snake = new Snake(3, new Point(Math.floor(this.width / 2), Math.floor(this.height / 2)));
-    this.apple = new Apple(this.getRandomPosition().x, this.getRandomPosition().y);
-    this.score = 0;
-    this.isGameOver = false;
-    this.lastUpdateTime = 0;
-  }
-
-  public update(currentTime: number): void {
-    if (this.isGameOver) return;
-
-    const deltaTime = currentTime - this.lastUpdateTime;
-    if (deltaTime < this.speed) return;
+  public play(display: Display): boolean {
+    if (this.isGameOver) {
+      return true;
+    }
 
     this.snake.move();
 
     if (this.checkBorderCollision() || this.snake.detectCollision()) {
       this.isGameOver = true;
-      return;
+      return true;
     }
 
     if (this.snake.hasSamePosition(this.apple)) {
@@ -51,17 +40,22 @@ export class Game {
       this.apple.generateNewPosition(this.width, this.height);
     }
 
-    this.lastUpdateTime = currentTime;
+    this.render(display);
+    return false;
   }
 
   public render(display: Display): void {
-    display.drawRectangle(this.apple.x, this.apple.y, this.apple.getColor());
+    
+    display.drawCircle(this.apple.x, this.apple.y, this.apple.getColor());
+  
     const snakeBody = this.snake.getBody();
     for (let segment of snakeBody) {
       display.drawRectangle(segment.x, segment.y, this.snake.getColor());
     }
-    display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor()); // Dessiner la tête
+  
+    display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor());
   }
+  
 
   public getScore(): number {
     return this.score;
