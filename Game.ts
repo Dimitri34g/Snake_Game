@@ -60,15 +60,21 @@ export class Game {
     for (let segment of snakeBody) {
       display.drawRectangle(segment.x, segment.y, this.snake.getColor());
     }
-    display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor());
+    display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor()); // Dessiner la tête
   }
 
-  public play(display: Display): boolean {
-    if (this.isGameOver) return true;
-    const currentTime = performance.now();
-    this.update(currentTime);
-    this.render(display);
-    return this.isGameOver;
+  public play(display: Display): void {
+    const loop = () => {
+      if (this.isGameOver) {
+        alert("Game Over! Your score: " + this.score);
+        return;
+      }
+      const currentTime = performance.now();
+      this.update(currentTime);
+      this.render(display);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
   }
 
   public getScore(): number {
