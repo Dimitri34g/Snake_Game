@@ -40,11 +40,32 @@ export class Snake extends Point {
         this.y = newHead.y;
       }
 
-      public changeDirection(newDirection: string) : void {}
+      public changeDirection(newDirection: string) : void {
+        const oppositeDirections: { [key: string]: string } = {
+            'up': 'down',
+            'down': 'up',
+            'left': 'right',
+            'right': 'left'
+            };
+            if ( newDirection !== oppositeDirections[this.direction] ) {
+                this.direction = newDirection;
+            }
+      }
 
-      public grow() : void {}
+      public grow(): void {
+        const tail = this.body[this.body.length - 1];
+        this.body.push(new Point(tail.x, tail.y));
+      }
+    
 
-      public detectCollision() : boolean {}
+      public detectCollision(): boolean {
+        for (let i = 0; i < this.body.length; i++) {
+          if (this.hasSamePosition(this.body[i])) {
+            return true;
+          }
+        }
+        return false;
+      }
 
       public getBody(): Point[] {
         return this.body;
