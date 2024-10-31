@@ -63,11 +63,11 @@ export class Game {
     display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor()); // Dessiner la tête
   }
 
-  public play(display: Display): void {
+  public play(display: Display): boolean {
     const loop = () => {
       if (this.isGameOver) {
         alert("Game Over! Your score: " + this.score);
-        return;
+        return true;
       }
       const currentTime = performance.now();
       this.update(currentTime);
@@ -75,6 +75,7 @@ export class Game {
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+    return false;
   }
 
   public getScore(): number {
