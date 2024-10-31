@@ -10,7 +10,7 @@ export class Game {
   private snake: Snake;
   private apple: Apple;
   private score: number;
-  private isGameOver: boolean;
+  public isGameOver: boolean;
   private lastUpdateTime: number;
 
   constructor(width: number, height: number, speed: number) {
@@ -61,21 +61,6 @@ export class Game {
       display.drawRectangle(segment.x, segment.y, this.snake.getColor());
     }
     display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor()); // Dessiner la tête
-  }
-
-  public play(display: Display): boolean {
-    const loop = () => {
-      if (this.isGameOver) {
-        alert("Game Over! Your score: " + this.score);
-        return true;
-      }
-      const currentTime = performance.now();
-      this.update(currentTime);
-      this.render(display);
-      requestAnimationFrame(loop);
-    };
-    requestAnimationFrame(loop);
-    return false;
   }
 
   public getScore(): number {

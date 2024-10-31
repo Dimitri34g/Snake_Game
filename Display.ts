@@ -41,26 +41,31 @@ export class Display {
         if(score!=null) score.innerHTML = this.score.toString();
     }
   
-    public play(game:Game) {
-        let lastChrono:number
-        let done : boolean = false
-        let loop = (chrono:number) => {
-            // console.log("hey")
+    public play(game: Game) {
+        let lastChrono: number;
+        let done: boolean = false;
+        let loop = (chrono: number) => {
             if (!lastChrono) lastChrono = chrono;
             const delta = chrono - lastChrono;
-            
+    
             if (delta >= this.speed) {
-                if(this.ctx!=null){
+                if (this.ctx != null) {
                     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                    done = game.play(this);
+                    game.update(chrono);
+                    game.render(this);
                     this.score = game.getScore();
                     this.refreshScore();
                     lastChrono = chrono;
+    
+                    if (game.isGameOver) {
+                        done = true;
+                        alert(`Game Over! Your score: ${this.score}`);
+                    }
                 }
             }
-            if (!done) requestAnimationFrame(loop)
+            if (!done) requestAnimationFrame(loop);
         };
-
-        requestAnimationFrame(loop)
+    
+        requestAnimationFrame(loop);
     }
   }

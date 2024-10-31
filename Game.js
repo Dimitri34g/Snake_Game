@@ -45,20 +45,6 @@ export class Game {
         }
         display.drawRectangle(this.snake.x, this.snake.y, this.snake.getColor()); // Dessiner la tête
     }
-    play(display) {
-        const loop = () => {
-            if (this.isGameOver) {
-                alert("Game Over! Your score: " + this.score);
-                return true;
-            }
-            const currentTime = performance.now();
-            this.update(currentTime);
-            this.render(display);
-            requestAnimationFrame(loop);
-        };
-        requestAnimationFrame(loop);
-        return false;
-    }
     getScore() {
         return this.score;
     }
